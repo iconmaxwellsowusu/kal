@@ -18,7 +18,8 @@ import loginDao.loginDao;
 /**
  * Servlet implementation class logIn
  */
-@WebServlet("/logIn")
+//@WebServlet("/logIn")
+@WebServlet(name = "logIn", value = "/logIn")
 public class logIn extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
