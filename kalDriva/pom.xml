@@ -22,12 +22,6 @@
             <version>3.1.0</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/javax.servlet.jsp/jsp-api -->
-        <dependency>
-            <groupId>javax.servlet.jsp</groupId>
-            <artifactId>jsp-api</artifactId>
-            <version>2.1</version>
-        </dependency>
 
         <!-- https://mvnrepository.com/artifact/jstl/jstl -->
         <dependency>
