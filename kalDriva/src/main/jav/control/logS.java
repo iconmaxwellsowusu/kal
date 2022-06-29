@@ -12,16 +12,14 @@ import javax.servlet.http.HttpSession;
 
 import loginDao.loginDao;
 
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
  * Servlet implementation class logS
  */
-@WebServlet(name = "logS", value = "/logS")
+//@WebServlet(name = "logS", value = "/logS")
 public class logS extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
