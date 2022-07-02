@@ -29,11 +29,11 @@ public class uEncrypt {
 
 	      Connection con = DBConnection.getConnection();
 	      
-	      PreparedStatement pst = con.prepareStatement("insert into login(unions,branch,password,name)values(?,?,?,?)");
+	      PreparedStatement pst = con.prepareStatement("insert into login(unions,branch,password,name,position,status)values(?,?,?,?,'Field Staff','Active')");
 		    pst.setString(1, union);
 		    pst.setString(2, branch);
-		    pst.setString(3, name);
-		    pst.setString(4, hashtext);
+		    pst.setString(3, hashtext);
+		    pst.setString(4,  name);
 		    pst.executeUpdate();
 	      
             return hashtext;

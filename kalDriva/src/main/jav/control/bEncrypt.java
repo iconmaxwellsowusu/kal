@@ -33,7 +33,7 @@ public class bEncrypt {
 
 	      Connection con = DBConnection.getConnection();
 	      
-	      PreparedStatement pst = con.prepareStatement("insert into login(unions,branch,name,password)values(?,?,?,?)");
+	      PreparedStatement pst = con.prepareStatement("insert into login(unions,branch,name,password,position,status)values(?,?,?,?,'Branch Manager','Active')");
 		    pst.setString(1, union);
 		    pst.setString(2, branch+" Branch");
 		    pst.setString(3, name);

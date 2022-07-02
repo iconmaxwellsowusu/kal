@@ -357,14 +357,10 @@ var animateButton = function(e) {
 			<form action="logIn" method="post" id="myform">
 				
 				<div class="form-group">
-					<label >Union</label>
+					<label >Name</label>
 					<input type="text" class="form-control " name="union"required>
 				</div>
-				<div class="form-group">
-					<label>Branch</label>
-					
-					<input type="text" class="form-control" name="branch" required>
-				</div>
+				
 				
 				<div class="form-group">
 					<label>Password</label>

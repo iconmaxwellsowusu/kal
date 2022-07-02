@@ -33,7 +33,7 @@ public class Encrypt {
 
 	      Connection con = DBConnection.getConnection();
 	      
-	      PreparedStatement pst = con.prepareStatement("insert into login(unions,branch,password,name)values(?,'Union',?,?)");
+	      PreparedStatement pst = con.prepareStatement("insert into login(unions,branch,password,name,position,status)values(?,'Union',?,?,'Union Manager','Active')");
 		    pst.setString(1, union);
 		    pst.setString(2, hashtext);
 		    pst.setString(3, name);

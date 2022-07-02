@@ -6,16 +6,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import control.DBConnection;
 public class loginDao {
-	String query = "select * from login where unions=? and branch=? and password=?";
+	String query = "select * from login where name=? and password=? and status='Active'";
 
-	public boolean check(String unions,String branch,String password) {
+	public boolean check(String name,String password) {
 		
 		try {
 			Connection con = DBConnection.getConnection();
 			PreparedStatement st = con.prepareStatement(query);
-			st.setString(1, unions);
-			st.setString(2, branch);
-			st.setString(3, password);
+			st.setString(1, name);
+			st.setString(2, password);
 			
 			ResultSet rs = st.executeQuery(); 
 			System.out.println();

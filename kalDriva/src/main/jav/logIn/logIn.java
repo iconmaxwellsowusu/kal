@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.ResultSet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,14 +13,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 
+import com.mysql.cj.protocol.Resultset;
+import com.mysql.cj.xdevapi.Statement;
+
+import java.io.IOException;
 import loginDao.loginDao;
+import control.DBConnection;
 
 /**
  * Servlet implementation class logIn
  */
-@WebServlet(name = "logIn", value = "/logIn")
+@WebServlet(name = "logIn", urlPatterns = {"/logIn"})
 public class logIn extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -34,7 +40,6 @@ public class logIn extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String name = request.getParameter("union");
-		String branch = request.getParameter("branch");
 		String pass = request.getParameter("pass");
 
 		
@@ -58,33 +63,50 @@ public class logIn extends HttpServlet {
 		loginDao dao = new loginDao();
 		HttpSession session = request.getSession(false);
 		
-       if(dao.check(name,branch, hashtext)) {
+		String position="";
+		String union="";
+		String branch="";
+		
+		String sql = "select * from login where name='"+name+"' and password='"+hashtext+"' and status='Active'";
+		Connection con=DBConnection.getConnection();
+		java.sql.Statement st = con.createStatement();
+		ResultSet rst = st.executeQuery(sql);
+		while(rst.next()) {
+			position = rst.getString("position");
+			union =rst.getString("unions");
+			branch =rst.getString("branch");
+		}
+		
+       if(dao.check(name, hashtext)) {
 			
-			if(name.equals("admin") && pass.equals(pass)) {
-			
-			session.setAttribute("name",name);
-			session.setAttribute("branch",branch);
-			session.setAttribute("pass",hashtext);
+			if(position.equals("admin")) {
+			session.setAttribute("position", position);
 			response.sendRedirect("adminDashboard.jsp");
 			
-			
-			}else if(name.equals(name)&& branch.equals("Union")&& pass.equals(pass)){
-				session.setAttribute("name",name);
-				session.setAttribute("branch",branch);
-				session.setAttribute("pass",hashtext);
+			}else if(position.equals("Union Manager")){
+				session.setAttribute("union", union);
+				session.setAttribute("branch", branch);
+				session.setAttribute("position", position);
 				response.sendRedirect("unionDashboard.jsp");
-			}else if(name.equals(name)&&branch.contains("Branch") && pass.equals(pass)) {
 				
-				session.setAttribute("name",name);
-				session.setAttribute("branch",branch);
-				session.setAttribute("pass",hashtext);
+			}else if(position.equals("Branch Manager")) {
+				session.setAttribute("union", union);
+				session.setAttribute("branch", branch);
+				session.setAttribute("position", position);
 				response.sendRedirect("BranchDashboard.jsp");
-				System.out.println("Contain Branch ........");
+				
+			}else if(position.equals("Field Staff")) {
+				
+				session.setAttribute("union", union);
+				session.setAttribute("branch", branch);
+				session.setAttribute("position", position);
+				response.sendRedirect("trips.jsp");
 				
 			}
 		}
 		
 		else {
+			System.out.println("Branch logging in .........////////////\\\\\\\\\\ "+branch);
 			
 			response.sendRedirect("index.jsp");
 		}

@@ -61,7 +61,7 @@ public class logS extends HttpServlet {
 		
 		loginDao dao = new loginDao();
 		HttpSession session = request.getSession(false);
-       if(dao.check(name,branch, hashtext)) {
+       if(dao.check(name,branch)) {
 			
 			if(name.equals("admin") && pass.equals(pass)) {
 			

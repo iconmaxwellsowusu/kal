@@ -28,6 +28,7 @@
 <%@ page import="control.DBConnection" %>
 <%@ page import="control.Encrypt" %>
 <%@ page import="control.bEncrypt" %>
+<%@ page import="control.uEncrypt" %>
 
 <%
 
@@ -1369,13 +1370,14 @@ else if(option.equals("getA")){
 									    String pass = request.getParameter("pass");
 									    String branches = request.getParameter("branch");
 									    
-									    String date = m4;									    
-									    pst = con.prepareStatement("insert into login(unions,branch,password,name)values(?,?,?,?)");
-									    pst.setString(1, union);
-									    pst.setString(2, branches);
-									    pst.setString(3, pass);
-									    pst.setString(4, name);
-									   
+									    String date = m4;	
+									    pst = con.prepareStatement("insert into field(name,unions,branch)values(?,?,?)");
+									   // pst = con.prepareStatement("insert into login(unions,branch,password,name)values(?,?,?,?)");
+									    pst.setString(1, name);
+									    pst.setString(2, union);
+									    pst.setString(3, branches);
+									    
+									    uEncrypt.enc(pass,union,branches,name);
 									    pst.executeUpdate();
 									    JSONObject obj = new JSONObject();
 									    obj.put("passenger", union);
