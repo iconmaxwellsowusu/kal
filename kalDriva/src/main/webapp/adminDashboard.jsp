@@ -16,40 +16,34 @@
     <!-- HTML5 Shim and Respond.js IE10 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 10]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-      <![endif]-->
-      <!-- Meta -->
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-      <meta name="description" content="Mega Able Bootstrap admin template made using Bootstrap 4 and it has huge amount of ready made feature, UI components, pages which completely fulfills any dashboard needs." />
-      <meta name="keywords" content="bootstrap, bootstrap admin template, admin theme, admin dashboard, dashboard template, admin template, responsive" />
-      <meta name="author" content="codedthemes" />
-      <!-- Favicon icon -->
-      <link href="assets/images/profile.jpg" rel="icon">
-    <!-- Google font-->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="Mega Able Bootstrap admin template made using Bootstrap 4 and it has huge amount of ready made feature, UI components, pages which completely fulfills any dashboard needs." />
+    <meta name="keywords" content="flat ui, admin Admin , Responsive, Landing, Bootstrap, App, Template, Mobile, iOS, Android, apple, creative app">
+    <meta name="author" content="codedthemes" />
+    <!-- Favicon icon -->
+    <link href="assets/images/profile.jpg" rel="icon">
+    <!-- Google font-->     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
+    <!-- Required Fremwork -->
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap/css/bootstrap.min.css">
     <!-- waves.css -->
     <link rel="stylesheet" href="assets/pages/waves/css/waves.min.css" type="text/css" media="all">
-      <!-- Required Fremwork -->
-      <link rel="stylesheet" type="text/css" href="assets/css/bootstrap/css/bootstrap.min.css">
-      <!-- waves.css -->
-      <link rel="stylesheet" href="assets/pages/waves/css/waves.min.css" type="text/css" media="all">
-      <!-- themify icon -->
-      <link rel="stylesheet" type="text/css" href="assets/icon/themify-icons/themify-icons.css">
-      <!-- Font Awesome -->
-      <link rel="stylesheet" type="text/css" href="assets/icon/font-awesome/css/font-awesome.min.css">
-      <!-- scrollbar.css -->
-      <link rel="stylesheet" type="text/css" href="assets/css/jquery.mCustomScrollbar.css">
-        <!-- am chart export.css -->
-        <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
-      <!-- Style.css -->
-      <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-      
+    <!-- themify-icons line icon -->
+    <link rel="stylesheet" type="text/css" href="assets/icon/themify-icons/themify-icons.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" type="text/css" href="assets/icon/font-awesome/css/font-awesome.min.css">
+    <!-- Style.css -->
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/jquery.mCustomScrollbar.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
-                 <!-- Alertify CSS -->
+             <!-- Alertify CSS -->
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
 	<!-- Default theme -->
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
@@ -776,10 +770,12 @@
                   </nav>
                   <div class="pcoded-content">
                       <!-- Page-header start -->
+                      
                       <script src="jquery-3.6.0.js" type="text/javascript"></script>
 					  <script src="component/jquery/jquery.min.js" type="text/javascript"></script>
 					  <script src="component/jquery.validate.min.js" type="text/javascript"></script>
 					  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+					  <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" type="text/javascript"></script> 
 					  <script type="text/javascript">
 					  
 					  trip();
@@ -790,6 +786,221 @@
 						tDrivers();
 						tStations();
 						tUncompleted();
+						
+						
+						
+						getall();
+						function getall()
+			            {
+			                
+			                $('#table2').dataTable().fnDestroy();
+			                $.ajax({
+			                    
+			                    url: "calData.jsp",
+			                    type : "GET",
+			                    dataType : "JSON",
+			                    data:{"option":'getUsers'},
+			                    
+			                    success:function(data)
+			                    {
+			                        
+			                       $('#table2').dataTable({
+			                           "aaData":data,
+			                           "scrollX": false,
+			                           
+			                           
+			                           "aoColumns":
+			                                   [
+			                              
+			                                	   {"sTitle": "#","mData": "number"},
+			                                    
+			                                    {
+			                                        "sTitle":
+			                                        "Profile",
+			                                        "mData": "name",
+			                                        "render" : function(mData,type,row,meta)
+			                                        {
+			                                        	var ids =row["id"];
+			                                        	return '<a data-toggle="modal" data-target="#xlarge1" style="cursor:pointer;" onclick="update('+ids+')"><img src="assets/images/avatar-2.jpg" alt="user image" class="img-radius img-40 align-top m-r-15"></a>';
+			                                            
+			                                        }
+			                                   },
+			                                   {
+			                                        "sTitle":
+			                                        "Name",
+			                                        "mData": "name",
+			                                        "render" : function(mData,type,row,meta)
+			                                        {
+			                                        	var ids =row["id"];
+			                                        	return '<a data-toggle="modal" data-target="#xlarge1" style="cursor:pointer;" onclick="update('+ids+')">'+mData+'</a>';
+			                                        }
+			                                   },
+			                                   {
+			                                        "sTitle":
+			                                        "Position",
+			                                        "mData": "position",
+			                                        "render" : function(mData,type,row,meta)
+			                                        {
+			                                        	var ids =row["id"];
+			                                        	return '<a data-toggle="modal" data-target="#xlarge1" style="cursor:pointer;" onclick="update('+ids+')">'+mData+'</a>';
+			                                        }
+			                                   },
+			                                   
+			                                   {
+			                                        "sTitle":
+			                                        "Union",
+			                                        "mData": "uni",
+			                                        "render" : function(mData,type,row,meta)
+			                                        {
+			                                        	var ids =row["id"];
+			                                        	return '<a data-toggle="modal" data-target="#xlarge1" style="cursor:pointer;" onclick="update('+ids+')">'+mData+'</a>';
+			                                        }
+			                                   },
+			                                   {
+			                                        "sTitle":
+			                                        "Branch",
+			                                        "mData": "bra",
+			                                        "render" : function(mData,type,row,meta)
+			                                        {
+			                                        	var ids =row["id"];
+			                                        	return '<a data-toggle="modal" data-target="#xlarge1" style="cursor:pointer;" onclick="update('+ids+')">'+mData+'</a>';
+			                                        }
+			                                   },
+			                                   {
+			                                        "sTitle":
+			                                        "Status",
+			                                        "mData": "status",
+			                                        "render" : function(mData,type,row,meta)
+			                                        {
+			                                        	var ids =row["id"];
+			                                        	var stat = mData;
+			                                        	if(stat.includes('Not Active')){
+				                                        	return '<a style="cursor:pointer;" ><label class="label label-inverse-danger">'+mData+'</label></a>';
+				                                        	}else{
+				                                        		return '<a style="cursor:pointer;" ><label class="label label-inverse-success">'+mData+'</label></a>';
+				                                        	}
+			                                        }
+			                                   },
+			                                  
+			                                  
+			                                   
+			                                   {
+			                                        "sTitle":
+			                                        "Activate",
+			                                        "mData": "status",
+			                                        "render" : function(mData,type,row,meta)
+			                                        {
+			                                        	var ids =row["id"];
+			                                        	return '<a style="cursor:pointer; color:green" onclick="activate('+ids+')"><i class="fa-solid fa-check"></i></a>';
+			                                        }
+			                                   }, 
+			                                   
+			                                   {
+			                                        "sTitle":
+			                                        "Deactivate",
+			                                        "mData": "status",
+			                                        "render" : function(mData,type,row,meta)
+			                                        {
+			                                        	var ids =row["id"];
+			                                        	return '<a style="cursor:pointer; color:red" onclick="deactivate('+ids+')"><i class="fa-solid fa-xmark"></i></a>';
+			                                        }
+			                                   }, 
+			                                  
+			                                   ]
+			                       });
+			                      
+			                    }  
+			                  
+			                });
+			                
+			            }
+						
+						
+						
+						function activate(id){
+							 var doit = confirm("Do you want to activate this user");
+		            	      if(doit){
+		            	    
+		            	    	  act(id);  
+		            	    	  
+		            	      }else
+		            	    	  alertify.error(' Canceled ');
+						 }
+						 
+		            	 function act(id){   	
+						 
+					        	  $.ajax({
+					        		  type:"GET",
+					        		  url:"calData.jsp",
+					        		  data:{"myid" :id,"option":'activateUser'},
+					        		 
+					        			  /*------------------------------------   Ajax call area  ------------------------------------------------*/
+					        		  success:function(msg){
+					        			  
+					        			  //var obj = JSON.parse(msg);
+					        			  var notification = alertify.notify('Success', 'success', 5, function(){  console.log('dismissed'); }); alertify.set('notifier','position', 'top-right');
+					        			  getall();
+					        		  },
+					        		  error(err){
+					        			  alertify.error(' file not seen ');
+					        		  }
+					        		  
+					        		  
+					        	  })
+					        	  
+					          }
+		            	 
+		            	 
+		            	 
+		            	 function deactivate(id){
+							 var doit = confirm("Do you want to deactivate this user");
+		            	      if(doit){
+		            	    
+		            	    	  deact(id);  
+		            	    	  
+		            	      }else
+		            	    	  alertify.error(' Canceled ');
+						 }
+						 
+		            	 function deact(id){   	
+						 
+					        	  $.ajax({
+					        		  type:"GET",
+					        		  url:"calData.jsp",
+					        		  data:{"myid" :id,"option":'deactivateUser'},
+					        		 
+					        			  /*------------------------------------   Ajax call area  ------------------------------------------------*/
+					        		  success:function(msg){
+					        			  
+					        			  //var obj = JSON.parse(msg);
+					        			  var notification = alertify.notify('Success', 'success', 5, function(){  console.log('dismissed'); }); alertify.set('notifier','position', 'top-right');
+					        			  getall();
+					        		  },
+					        		  error(err){
+					        			  alertify.error(' file not seen ');
+					        		  }
+					        		  
+					        		  
+					        	  })
+					        	  
+					          }
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						/*-------------------------------------/////////////////////////////-----------------------------*/
+						
+						
+						
+						
+						
+						
+						
 						function addUnion(){
 				        	  
 				        	  $.ajax({
@@ -802,7 +1013,7 @@
 				        		  success:function(msg){
 				        			  var obj = JSON.parse(msg);
 				        			  var notification = alertify.notify('Success', 'success', 5, function(){  console.log('dismissed'); }); alertify.set('notifier','position', 'top-right');
-				        			  
+				        			  getall();
 				        		  },
 				        		  error(err){
 				        			  alertify.error('Error');
@@ -826,7 +1037,7 @@
 					        		  success:function(msg){
 					        			  var obj = JSON.parse(msg);
 					        			  var notification = alertify.notify('Success', 'success', 5, function(){  console.log('dismissed'); }); alertify.set('notifier','position', 'top-right');
-					        			  
+					        			  getall();
 					        		  },
 					        		  error(err){
 					        			  alertify.error('Error');
@@ -849,7 +1060,7 @@
 					        		  success:function(msg){
 					        			  var obj = JSON.parse(msg);
 					        			  var notification = alertify.notify('Success', 'success', 5, function(){  console.log('dismissed'); }); alertify.set('notifier','position', 'top-right');
-					        			  
+					        			  getall();
 					        		  },
 					        		  error(err){
 					        			  alertify.error('Error');
@@ -1476,13 +1687,26 @@
                                                         </div>
                                                     </div>
                                                     <div class="card-block">
-                                                        <div class="align-middle m-b-30">
-                                                            <img src="assets/images/avatar-2.jpg" alt="user image" class="img-radius img-40 align-top m-r-15">
-                                                            <div class="d-inline-block">
-                                                                <h6>David Jones</h6>
-                                                                <p class="text-muted m-b-0">Developer</p>
-                                                            </div>
-                                                        </div>
+                                           <div class="table-responsive">     
+                                           <table id="table2" class="table table-borderless" >
+										  <thead class="bg-info">
+										   <tr>
+		                                        <th></th>
+		                                        <th></th>
+		                                        <th></th>
+		                                        <th></th>
+		                                        <th></th>
+		                                        <th></th>
+		                                        <th></th>
+		                                        <th></th>
+		                                        <th></th>
+                             
+                                           </tr>  
+										  </thead>
+										  
+										</table>
+										</div> 
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
@@ -1545,7 +1769,6 @@
     <!-- Warning Section Ends -->
     
     <!-- Required Jquery -->
-    <script type="text/javascript" src="assets/js/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="assets/js/jquery-ui/jquery-ui.min.js "></script>
     <script type="text/javascript" src="assets/js/popper.js/popper.min.js"></script>
     <script type="text/javascript" src="assets/js/bootstrap/js/bootstrap.min.js "></script>

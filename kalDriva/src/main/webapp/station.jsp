@@ -59,35 +59,21 @@
 <body>
 
 
- <%
-	
-	Connection con=DBConnection.getConnection();
-	Statement st = con.createStatement();
-    String union = (String)session.getAttribute("name");
-    String branch = (String)session.getAttribute("branch");
-    String pass = (String)session.getAttribute("pass");
-  	try{
-	 
 
-	String b=null;
-	String p=null;
-	String u=null;
-        response.setHeader("cache-control", "no-cache, no-store, must-revalidate");
-	ResultSet resultSet = st.executeQuery("select * from login where unions='"+union+"' and branch='"+branch+"' and password='"+pass+"'");
-	
-	while(resultSet.next()){
-		b=resultSet.getString("branch");
-		u=resultSet.getString("unions");
-		p=resultSet.getString("password");
-	}
-        if( !branch.equals("admin") && !branch.equals("Union")){
+      <%
+  	Connection con=DBConnection.getConnection();
+  	Statement st = con.createStatement();
+    response.setHeader("cache-control", "no-cache, no-store, must-revalidate");
+    String position = (String)session.getAttribute("position");
+    String branch = (String)session.getAttribute("branch");
+    String union = (String)session.getAttribute("union");
+    
+        if(!position.equals("Union Manager") && !position.equals("admin")){
               response.sendRedirect("index.jsp");   
         }
-  	}catch(Exception e){
-  		 response.sendRedirect("index.jsp"); 
-  		 
-  	}
-   %> 
+        
+  	
+   %>
 
 <!-- Pre-loader start -->
 <div class="theme-loader">
@@ -203,7 +189,7 @@
                         </li>
                         
                          <%
-					     String dash = branch;
+					     String dash = position;
 					     String dashPage="";
 					     String admin = "adminDashboard.jsp";
 					     String union1 = "unionDashboard.jsp";

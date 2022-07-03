@@ -60,35 +60,21 @@
 <body>
 
 
-   <%
-	
-	Connection con=DBConnection.getConnection();
-	Statement st = con.createStatement();
-    String union = (String)session.getAttribute("name");
-    String branch = (String)session.getAttribute("branch");
-    String pass = (String)session.getAttribute("pass");
-  	try{
-	 
 
-	String b=null;
-	String p=null;
-	String u=null;
-        response.setHeader("cache-control", "no-cache, no-store, must-revalidate");
-	ResultSet resultSet = st.executeQuery("select * from login where unions='"+union+"' and branch='"+branch+"' and password='"+pass+"'");
-	
-	while(resultSet.next()){
-		b=resultSet.getString("branch");
-		u=resultSet.getString("unions");
-		p=resultSet.getString("password");
-	}
-        if( !branch.equals("admin") && !branch.equals("Union")){
+      <%
+  	Connection con=DBConnection.getConnection();
+  	Statement st = con.createStatement();
+    response.setHeader("cache-control", "no-cache, no-store, must-revalidate");
+    String position = (String)session.getAttribute("position");
+    String branch = (String)session.getAttribute("branch");
+    String union = (String)session.getAttribute("union");
+    
+        if(!position.equals("Field Staff") && !position.equals("Union Manager") && !position.equals("Branch Manager") && !position.equals("admin")){
               response.sendRedirect("index.jsp");   
         }
-  	}catch(Exception e){
-  		 response.sendRedirect("index.jsp"); 
-  		 
-  	}
-   %> 
+       
+  	
+   %>
 
 <!-- Pre-loader start -->
 <div class="theme-loader">
@@ -204,7 +190,7 @@
                         </li>
                         
                          <%
-					     String dash = branch;
+					     String dash = position;
 					     String dashPage="";
 					     String admin = "adminDashboard.jsp";
 					     String union1 = "unionDashboard.jsp";
@@ -518,6 +504,134 @@
                             <div class="page-wrapper">
                                 <div class="page-body">
                                     <div class="row">
+                                    
+                                    
+                            <div class="col-xl-4 col-md-12">
+                              <div class="card ">
+                                  <div class="card-header">
+                                      <h5>Select a Trips</h5>
+                                      <div class="card-header-right">
+                                          <ul class="list-unstyled card-option">
+                                              <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                              <li><i class="fa fa-window-maximize full-card"></i></li>
+                                              <li><i class="fa fa-minus minimize-card"></i></li>
+                                              <li><i class="fa fa-refresh reload-card"></i></li>
+                                              <li><i class="fa fa-trash close-card"></i></li>
+                                          </ul>
+                                      </div>
+                                  </div>
+        
+                              <div class="card-block">
+                                 <form id="bookForm">
+                                    <div class="form-group row  container justify-content-center">
+                                   <!-- Employee Details  -->
+                                        
+                                        <div class="col-md-12 mb-3">
+										<label for="" class="mt-1">Select Trip</label>
+											<select name="trip" id="tripVal" class="selectpicker form-control" data-live-search="true">
+											 <option >click to select</option>
+											<%
+											    String sql="Select * from trip where status ='Booking' and branch='"+branch+"' or unions='"+union+"'";
+												ResultSet rst = st.executeQuery(sql);
+												while(rst.next()){
+											%>
+											   
+												<option ><%=rst.getString("trip") %></option>
+											<%} %>	
+											</select> 
+										</div>
+										</div>
+										</form>
+                                                        
+                                                       <button class="btn waves-effect waves-light btn-grd-danger" onclick="seat()">Proceed >>>>></button>
+                                                      
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    
+                                    
+                            <div class="col-xl-8 col-md-12">
+                              <div class="card ">
+                                  <div class="card-header">
+                                      <h5>Select a Trips</h5>
+                                      <div class="card-header-right">
+                                          <ul class="list-unstyled card-option">
+                                              <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                              <li><i class="fa fa-window-maximize full-card"></i></li>
+                                              <li><i class="fa fa-minus minimize-card"></i></li>
+                                              <li><i class="fa fa-refresh reload-card"></i></li>
+                                              <li><i class="fa fa-trash close-card"></i></li>
+                                          </ul>
+                                      </div>
+                                  </div>
+        
+                              <div class="card-block">
+                                 <form id="bookForm">
+                                    <div class="form-group row  container justify-content-center">
+                                   <!-- Employee Details  -->
+                                   <form id="bookForm">
+                                                        <div class="form-group row  container justify-content-center">
+                                   <!-- Employee Details  -->
+                                       
+                                        
+										<div class="form-group floating-label col-md-4 mb-3">
+										<label for="" class="mt-1">ID Number</label>
+											<input class="form-control" name="idNumber" id="idNumber" readonly>
+										</div>
+										
+									    <div class="col-md-4 mb-3">
+                                            <label>Passenger's Phone</label>
+                                            <input class="form-control" name="phone" id="phone" type="number" readonly>
+                                        </div>
+									
+									   <div class="col-md-4 mb-3">
+                                                <label>Passeger's Name</label>
+                                                    <input class="form-control" name="passenger" id="passenger" readonly>
+                                            </div>
+                                            
+
+                                            
+                                     
+                                            
+                                             <div class="col-md-4 mb-3">
+                                                <label>Emergency Phone</label>
+                                                    <input class="form-control" name="ephone" id="ephone" type="tel" readonly>
+                                            </div>
+                                            
+                                          <div class="col-md-4 mb-3">
+                                                <label>Destination</label>
+                                                    <input class="form-control" name="destination" id="destination" readonly>
+                                            </div>
+                                           
+                                            <div class="col-md-4 mb-3">
+                                            <label>Seat Number</label>
+                                            <div class="input-group mb-3">
+                                                    <input class="form-control" name="seat" id="seat" readonly>
+                                                    <button class="btn btn-dark" type="button"
+                                                       onclick="openSeat()" title="open this field"><i class="fa-solid fa-lock-open"></i></button>
+                                                </div>
+                                            </div>
+                                            </div>
+                                                       
+                                                       
+                                                       </form> 
+                                        
+                                        
+                                        
+										</div>
+										</form>
+                                                        
+                                                       <button class="btn waves-effect waves-light btn-grd-success" onclick="add()">Add a booking</button>
+                                                      
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
                                         <div class="col-sm-12">
                                             <div class="card">
                                                 <div class="card-header">
@@ -534,10 +648,6 @@
                                                     </div>
                                                 </div>
                                                 <div class="card-block">
-                                                   
-                                                      <form id="bookForm">
-                                                        <div class="form-group row  container justify-content-center">
-                                   <!-- Employee Details  -->
    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
@@ -546,65 +656,8 @@
        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         
-                                        <div class="col-md-4 mb-3">
-										<label for="" class="mt-1">Select Trip</label>
-											<select name="trip" id="trip" class="selectpicker form-control" data-live-search="true">
-											 <option >click to select</option>
-											<%
-											    String sql="Select * from trip where status='Booking'";
-												
-												ResultSet rst = st.executeQuery(sql);
-												while(rst.next()){
-											%>
-											   
-												<option ><%=rst.getString("trip") %></option>
-											<%} %>	
-											</select> 
-										</div>
-                                        
-										<div class="form-group floating-label col-md-4 mb-3">
-										<label for="" class="mt-1">ID Number</label>
-											<input class="form-control" name="idNumber" id="idNumber">
-										</div>
-										
-									    <div class="col-md-4 mb-3">
-                                            <label>Passenger's Phone</label>
-                                            <input class="form-control" name="phone" id="phone" type="number">
-                                        </div>
-									
-									   <div class="col-md-4 mb-3">
-                                                <label>Passeger's Name</label>
-                                                    <input class="form-control" name="passenger" id="passenger">
-                                            </div>
-                                            
-
-                                            
-                                     
-                                            
-                                             <div class="col-md-4 mb-3">
-                                                <label>Emergency Phone</label>
-                                                    <input class="form-control" name="ephone" id="ephone" type="tel">
-                                            </div>
-                                            
-                                          <div class="col-md-4 mb-3">
-                                                <label>Destination</label>
-                                                    <input class="form-control" name="destination" id="destination">
-                                            </div>
-                                           
-                                            <div class="col-md-4 mb-3">
-                                            <label>Seat Number</label>
-                                            <div class="input-group mb-3">
-                                                    <input class="form-control" name="seat" id="seat" readonly>
-                                                    <button class="btn btn-dark" type="button"
-                                                       onclick="openSeat()" title="open this field"><i class="fa-solid fa-lock-open"></i></button>
-                                                </div>
-                                            </div>
-                                            </div>
-                                                       
-                                                       
-                                                       </form>
                                          <div align="right">
-                                           <button class="btn waves-effect waves-light btn-grd-success" onclick="add()">Add a booking</button>        
+                                                   
                                            </div>         
                                                  
                                             <br>
@@ -822,7 +875,7 @@
 										        		  
 										        		  type:"POST",
 										        		  url:"calData.jsp",
-										        		  data:{"idNumber":$("#idNumber").val(),"passenger":$("#passenger").val() ,"phone":$("#phone").val(),"ephone":$("#ephone").val(),"trip":$("#trip").val(),"destination":$("#destination").val(),"seat":$("#seat").val(),"option":'addBook'},
+										        		  data:{"idNumber":$("#idNumber").val(),"passenger":$("#passenger").val() ,"phone":$("#phone").val(),"ephone":$("#ephone").val(),"trip":$("#tripVal").val(),"destination":$("#destination").val(),"seat":$("#seat").val(),"option":'addBook'},
 										        		 
 										        			  /*------------------------------------   Ajax call area  ------------------------------------------------*/
 										        		  success:function(msg){
@@ -834,7 +887,7 @@
 										        			  $("#seat").attr('readonly','true');
 										        			  $('#bookForm')[0].reset();
 										        			  
-										        			  message(pPhone);
+										        			  testClear();
 										        			  
 										        		  },
 										        		  error(err){
@@ -845,6 +898,26 @@
 										        	  })
 										        	  
 										          }
+												 
+												 function testClear(){
+														var f=document.getElementById("bookForm");
+														
+														
+														function delay(delayInms) {
+															  return new Promise(resolve => {
+															    setTimeout(() => {
+															      resolve(2);
+															    }, delayInms);
+															  });
+															}
+
+															async function sample() {
+																f.submit();
+															  let delayres = await delay(3000);
+															  f.reset();
+															}
+															sample();
+													}
 												 
 												 function edit(){
 										        	  
@@ -977,7 +1050,7 @@
 								            		 $.ajax({
 										        		  type:"GET",
 										        		  url:"calData.jsp",
-										        		  data:{"seat" :val,"option":'seat'},
+										        		  data:{"seat":$("#tripVal").val(),"option":'seat'},
 										        		 
 										        			  /*------------------------------------   Ajax call area  ------------------------------------------------*/
 										        		  success:function(msg){
@@ -986,7 +1059,12 @@
 										        			
 										        				   var notification = alertify.notify('ID Exists', 'success', 5, function(){  console.log('dismissed'); }); alertify.set('notifier','position', 'top-right');
 										        				  $("#seat").val(obj[0].seatForU);
-											        			 
+										        				  $('#passenger').removeAttr('readonly');
+										        				  $('#idNumber').removeAttr('readonly');
+										        				  $('#ephone').removeAttr('readonly');
+										        				  $('#phone').removeAttr('readonly');
+										        				  $('#destination').removeAttr('readonly');
+										        				  
 										        			  
 										        		  },
 										        		  error(err){
@@ -999,12 +1077,7 @@
 								         
 								         
 								        //////////////////\\\\\\\\\\\\\\\\   On Select of drop down \\\\\\\\\\///////////
-								            			 $("#trip").on('change', function(){
-								            				 var val = $(this).val();
-								            				
-								            				 seat(val);
-								            				 
-								            				});
+								            			
 								            			 
 								        //////////////////\\\\\\\\\\\\\\\\   On Typing \\\\\\\\\\///////////	 
 								            			 

@@ -65,11 +65,13 @@
   	Statement st = con.createStatement();
     response.setHeader("cache-control", "no-cache, no-store, must-revalidate");
     String position = (String)session.getAttribute("position");
+    String branch = (String)session.getAttribute("branch");
+    String union = (String)session.getAttribute("union");
     
-        if(!position.equals("Field Staff")){
+        if(!position.equals("Field Staff") && !position.equals("Union Manager") && !position.equals("Branch Manager") && !position.equals("admin")){
               response.sendRedirect("index.jsp");   
         }
-        System.out.println((String)session.getAttribute("branch"));
+      
   	
    %>
 
@@ -483,6 +485,8 @@
 													    </div>
 													  </div>
 													</div>
+													
+
                 <div class="pcoded-content">	
                   
                     <div class="pcoded-inner-content">
@@ -523,7 +527,7 @@
 										<label >Select Vehicle</label>
 											<select name="vehicle" id="vehicle" class="selectpicker form-control" data-live-search="true">
 											<%
-											    String sql="Select * from vehile";
+											    String sql="Select * from vehile where branch='"+branch+"' or unions='"+union+"'";
 												
 												ResultSet rst = st.executeQuery(sql);
 												while(rst.next()){
@@ -601,6 +605,49 @@
                         </div>
                     </div>
                 </div>
+                
+                														<div class="modal-danger me-1 mb-1 d-inline-block">
+                                                   
+                                                    <!--Danger theme Modal -->
+                                                    <div class="modal fade text-left" id="danger" tabindex="-1"
+                                                        role="dialog" aria-labelledby="myModalLabel120"
+                                                        aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+                                                            role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header bg-danger">
+                                                                    <h5 class="modal-title white" id="myModalLabel120">
+                                                                        State Reason why trip is incomplete
+                                                                    </h5>
+                                                                    <button type="button" class="close"
+                                                                        data-bs-dismiss="modal" aria-label="Close">
+                                                                        <i data-feather="x"></i>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                   <div class="form-group with-title mb-3">
+							                                        <textarea class="form-control" id="reason"
+							                                            rows="3"></textarea>
+							                                        <label>Your Reason</label>
+							                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button"
+                                                                        class="btn btn-light-secondary"
+                                                                        data-bs-dismiss="modal">
+                                                                        <i class="bx bx-x d-block d-sm-none"></i>
+                                                                        <span class="d-none d-sm-block">Cancel</span>
+                                                                    </button>
+                                                                    <button type="button" class="btn btn-danger ml-1"
+                                                                        data-bs-dismiss="modal" onclick="incomplete()">
+                                                                        <i class="bx bx-check d-block d-sm-none"></i>
+                                                                        <span class="d-none d-sm-block">Submit</span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
       
         <script src="component/jquery/jquery.js" type="text/javascript"></script>
         <script src="component/jquery/jquery.min.js" type="text/javascript"></script>
@@ -678,7 +725,7 @@
 									                                        	}else if(stat.includes('Ended') ||stat.includes('ENDED')){
 									                                        	return '<a data-toggle="modal" data-target="#xlarge1" style="cursor:pointer;" onclick="update('+ids+')"><label class="label label-inverse-success">'+mData+'</label></a>';
 									                                        	}else if(stat.includes('Incomplete')){
-									                                        	return '<a data-toggle="modal" data-target="#xlarge1" style="cursor:pointer;" onclick="update('+ids+')"><label class="label label-inverse-secondary">'+mData+'</label></a>';
+									                                        	return '<a data-toggle="modal" data-target="#xlarge1" style="cursor:pointer;" onclick="update('+ids+')"><label class="label label-inverse-primary">'+mData+'</label></a>';
 									                                        	}else if(stat.includes('Booking') ||stat.includes('BOOKING')){
 									                                        		return '<a data-toggle="modal" data-target="#xlarge1" style="cursor:pointer;" onclick="update('+ids+')"><label class="label label-inverse-warning">'+mData+'</label></a>';
 									                                        	}else{
@@ -1021,8 +1068,7 @@
 											        		 
 											        			  /*------------------------------------   Ajax call area  ------------------------------------------------*/
 											        		  success:function(msg){
-											        			  var obj = JSON.parse(msg);
-											        			  var time = obj[0].munites;
+											        			  //var obj = JSON.parse(msg);
 											        			  var notification = alertify.notify('Success', 'success', 5, function(){  console.log('dismissed'); }); alertify.set('notifier','position', 'top-right');
 											        			  getall();
 											        			  
@@ -1097,7 +1143,7 @@
 								            	 
 								            	 function incomplete(id){   	
 								            		var is = sessionStorage.getItem("id",id);
-														$("#danger").modal("show");
+														$("#danger").modal("hide");
 											        	   $.ajax({
 											        		  type:"GET",
 											        		  url:"calData.jsp",
@@ -1245,6 +1291,8 @@
                                         
                 
                 <div id="styleSelector">
+                
+                                		
                 
                 </div>
             </div>

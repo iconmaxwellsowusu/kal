@@ -29,7 +29,7 @@
 <%@ page import="control.Encrypt" %>
 <%@ page import="control.bEncrypt" %>
 <%@ page import="control.uEncrypt" %>
-
+<%@ page import="control.hellio" %>
 <%
 
 String branch1 = (String)session.getAttribute("branch");
@@ -60,7 +60,7 @@ String search= request.getParameter("search");
 String fon= request.getParameter("fon");
 String tripName= request.getParameter("seat");
 String branch = (String)session.getAttribute("branch");
-String unions = "admin";
+String unions = (String)session.getAttribute("union");
 
 if(option.equals("getBranch")){
 	
@@ -650,14 +650,15 @@ else if(option.equals("addBook")){
 	
 	String idNumber = request.getParameter("idNumber");
 	String passenger = request.getParameter("passenger");
-	session.setAttribute("passenger", passenger);
+	//session.setAttribute("passenger", passenger);
     String phone = request.getParameter("phone");
     String ephone = request.getParameter("ephone");
     String trip = request.getParameter("trip");
-    session.setAttribute("trip", trip);
+    //session.setAttribute("trip", trip);
     String destination = request.getParameter("destination");
     String seat = request.getParameter("seat");
-    session.setAttribute("seat", seat);
+    String car = "";
+   // session.setAttribute("seat", seat);
     String date = m4;
     
   
@@ -673,19 +674,21 @@ else if(option.equals("addBook")){
     pst.setString(9, branch);
     pst.setString(10, unions);
     pst.executeUpdate();
-    //////////////////////////////////////**************   hellio txt msg  *****************************///////////////////////////////
-    
-    
-    
-//////////////////////////////////////**************   hellio txt msg  *****************************///////////////////////////////   
     JSONObject obj = new JSONObject();
     obj.put("phone", phone);
-
     list.add(obj);
-	
     out.print(list.toJSONString());
 	out.flush();
-	
+    //////////////////////////////////////**************   hellio txt msg  *****************************///////////////////////////////
+    String sql = "select * from trip where trip='"+trip+"'";
+    Statement st = con.createStatement();
+    rs = st.executeQuery(sql);
+    while(rs.next()){
+    	car = rs.getString("vehicle");
+    }
+    hellio.helio(car,trip,phone,passenger,seat);
+    
+//////////////////////////////////////**************   hellio txt msg  *****************************///////////////////////////////   
 	
 }
 
@@ -1243,32 +1246,39 @@ else if(option.equals("getA")){
 									    list.add(obj);
 									}else if(option.equals("end")){
 										String id = request.getParameter("myid");
-										String munites="";
-										pst = con.prepareStatement("update trip set status='Ended',eTime=? where id=?");
-										pst.setString(1, endTime);
-										pst.setString(2, id);
-									    pst.executeUpdate();
-									    JSONObject obj = new JSONObject();
-									    obj.put("id", id);
-									    list.add(obj);
+										double munites=0;
+                                        String speedStatus="";
 									    ///////////////***************   Calculate End Time  ****************/////////////////
 									    String sTime = "";
-									    String speed="";
+									    double speed=0;
 									    String union="";
 									    String sql = "select sTime,speedL,unions from trip where id='"+id+"'";
 									    rs = stmt.executeQuery(sql);
 									    while(rs.next()){
 									    	sTime=rs.getString(1);
+									    	speed=rs.getDouble(2);
 									    	String sql1 = "SELECT (TIME_TO_SEC('"+endTime+"') - TIME_TO_SEC('"+sTime+"'))/60";
 									    	rs = stmt.executeQuery(sql1);
 									    	while(rs.next()){
-									    		munites= rs.getString(1);
+									    		munites= rs.getDouble(1);
 									    		
 									    	}
 									    }
+									    if(munites<speed){
+									    	speedStatus ="OverSpeeded";
+									    }else{
+									    	speedStatus="UnderSpeeded";
+									    }
 									    
+										pst = con.prepareStatement("update trip set status='Ended',eTime=?,speedMinutes=?,SpeedStatus=? where id=?");
+										pst.setString(1, endTime);
+										pst.setDouble(2, munites);
+										pst.setString(3, speedStatus);
+										pst.setString(4, id);
+									    pst.executeUpdate();
+									    JSONObject obj = new JSONObject();
 									    obj.put("id", id);
-									    obj.put("munites", munites);
+									    
 									    list.add(obj);
 									    //////////////****************   Calculate End Time  ****************/////////////////
 									    
@@ -1423,35 +1433,103 @@ else if(option.equals("getA")){
 										
 									}else if(option.equals("starTrip")){
 										String id = request.getParameter("myid");
-										String munites="";
-										pst = con.prepareStatement("update trip set status='Started',eTime=? where id=?");
+										
+										pst = con.prepareStatement("update trip set status='Started',sTime=? where id=?");
 										pst.setString(1, endTime);
 										pst.setString(2, id);
 									    pst.executeUpdate();
 									    JSONObject obj = new JSONObject();
 									    obj.put("id", id);
 									    list.add(obj);
-									    ///////////////***************   Calculate End Time  ****************/////////////////
-									    String sTime = "";
-									    String speed="";
-									    String union="";
-									    String sql = "select sTime,speedL,unions from trip where id='"+id+"'";
-									    rs = stmt.executeQuery(sql);
-									    while(rs.next()){
-									    	sTime=rs.getString(1);
-									    	String sql1 = "SELECT (TIME_TO_SEC('"+endTime+"') - TIME_TO_SEC('"+sTime+"'))/60";
-									    	rs = stmt.executeQuery(sql1);
-									    	while(rs.next()){
-									    		munites= rs.getString(1);
-									    		
-									    	}
-									    }
-									    
-									    obj.put("id", id);
-									    obj.put("munites", munites);
-									    list.add(obj);
+									  
 									    //////////////****************   Calculate End Time  ****************/////////////////
 									    
+									}	else if(option.equals("getUsers")){
+										String query2 = "select * from login";
+
+										rs = stmt.executeQuery(query2);
+										int ii=0;
+										while(rs.next())
+										{
+										    JSONObject obj = new JSONObject();
+										    String id = rs.getString("id");
+										    String name = rs.getString("name");
+										    String position = rs.getString("position");
+										    String uni = rs.getString("unions");
+										    String bra = rs.getString("branch");
+										    String status = rs.getString("status");
+										    ii+=1;
+										    String number= String.valueOf(ii);
+                                          
+										    obj.put("id", id);
+										    obj.put("name", name);
+										    obj.put("position", position);
+										    obj.put("uni", uni);
+										    obj.put("bra", bra);
+										    obj.put("status", status);
+										    obj.put("number", number);
+										    list.add(obj);
+										}
+
+										out.print(list.toJSONString());
+										out.flush();
+										}
+
+									else if(option.equals("activateUser")){
+										
+										String id = request.getParameter("myid");
+										pst = con.prepareStatement("update login set status='Active' where id=?");
+										pst.setString(1, id);
+										
+									    pst.executeUpdate();
+									    JSONObject obj = new JSONObject();
+									    obj.put("id", id);
+									    list.add(obj);
+									    
+									    out.print(list.toJSONString());
+										out.flush();
+									}else if(option.equals("deactivateUser")){
+										
+										String id = request.getParameter("myid");
+										pst = con.prepareStatement("update login set status='Not Active' where id=?");
+										pst.setString(1, id);
+										
+									    pst.executeUpdate();
+									    JSONObject obj = new JSONObject();
+									    obj.put("id", id);
+									    list.add(obj);
+									    
+									    out.print(list.toJSONString());
+										out.flush();
+									}else if(option.equals("deleteDr")){
+										
+										String id = request.getParameter("myid");
+										pst = con.prepareStatement("delete from driver where id=?");
+										pst.setString(1, id);
+										
+									    pst.executeUpdate();
+									    JSONObject obj = new JSONObject();
+									    obj.put("id", id);
+									    list.add(obj);
+									    
+									    out.print(list.toJSONString());
+										out.flush();
 									}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 %>

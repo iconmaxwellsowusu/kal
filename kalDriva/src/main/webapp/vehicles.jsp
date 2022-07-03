@@ -61,34 +61,20 @@
 
 <body>
 
- <%
-	
-	Connection con=DBConnection.getConnection();
-	Statement st = con.createStatement();
-    String union = (String)session.getAttribute("name");
-    String branch = (String)session.getAttribute("branch");
-    String pass = (String)session.getAttribute("pass");
-  	try{
-	 
 
-	String b=null;
-	String p=null;
-	String u=null;
-        response.setHeader("cache-control", "no-cache, no-store, must-revalidate");
-	ResultSet resultSet = st.executeQuery("select * from login where unions='"+union+"' and branch='"+branch+"' and password='"+pass+"'");
-	
-	while(resultSet.next()){
-		b=resultSet.getString("branch");
-		u=resultSet.getString("unions");
-		p=resultSet.getString("password");
-	}
-        if( !branch.equals("admin") && !branch.equals("Union")){
+      <%
+  	Connection con=DBConnection.getConnection();
+  	Statement st = con.createStatement();
+    response.setHeader("cache-control", "no-cache, no-store, must-revalidate");
+    String position = (String)session.getAttribute("position");
+    String branch = (String)session.getAttribute("branch");
+    String union = (String)session.getAttribute("union");
+    
+        if(!position.equals("Union Manager") && !position.equals("Branch Manager") && !position.equals("admin")){
               response.sendRedirect("index.jsp");   
         }
-  	}catch(Exception e){
-  		 response.sendRedirect("index.jsp"); 
-  		 
-  	}
+       
+  	
    %>
 
 <!-- Pre-loader start -->
@@ -205,7 +191,7 @@
                         </li>
                         
                          <%
-					     String dash = branch;
+					     String dash = position;
 					     String dashPage="";
 					     String admin = "adminDashboard.jsp";
 					     String union1 = "unionDashboard.jsp";
@@ -530,7 +516,7 @@
                                                 </div>
                                                 <div class="card-block">
                                                    
-                                     <form action="">
+                                     <form action="" id="vForm">
                                  <div class="form-group row  container justify-content-center">
                                    <!-- Employee Details  -->
    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
@@ -546,7 +532,7 @@
 											<select name="driver" id="driver" class="selectpicker form-control" data-live-search="true">
 											<%
 											
-											    String sql="Select * from driver";
+											    String sql="Select * from driver where branch='"+branch+"' or unions='"+union+"'";
 												ResultSet rst = st.executeQuery(sql);
 												while(rst.next()){
 											%>
@@ -792,6 +778,7 @@
 										        			  var obj = JSON.parse(msg);
 										        			  var notification = alertify.notify('Success', 'success', 5, function(){  console.log('dismissed'); }); alertify.set('notifier','position', 'top-right');
 										        			  getall();
+										        			  testClear();
 										        		  },
 										        		  error(err){
 										        			  alertify.error('Error');
@@ -801,6 +788,26 @@
 										        	  })
 										        	  
 										          }
+												 
+												 function testClear(){
+														var f=document.getElementById("vForm");
+														
+														
+														function delay(delayInms) {
+															  return new Promise(resolve => {
+															    setTimeout(() => {
+															      resolve(2);
+															    }, delayInms);
+															  });
+															}
+
+															async function sample() {
+																f.submit();
+															  let delayres = await delay(3000);
+															  f.reset();
+															}
+															sample();
+													}
 												 
 												 function edit(){
 										        	  

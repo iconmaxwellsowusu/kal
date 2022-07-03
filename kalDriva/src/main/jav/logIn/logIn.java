@@ -75,6 +75,10 @@ public class logIn extends HttpServlet {
 			position = rst.getString("position");
 			union =rst.getString("unions");
 			branch =rst.getString("branch");
+			System.out.println(position+" "+union +" "+ branch);
+			session.setAttribute("union", union);
+			session.setAttribute("branch", branch);
+			session.setAttribute("position", position);
 		}
 		
        if(dao.check(name, hashtext)) {
@@ -84,22 +88,14 @@ public class logIn extends HttpServlet {
 			response.sendRedirect("adminDashboard.jsp");
 			
 			}else if(position.equals("Union Manager")){
-				session.setAttribute("union", union);
-				session.setAttribute("branch", branch);
-				session.setAttribute("position", position);
+
 				response.sendRedirect("unionDashboard.jsp");
 				
 			}else if(position.equals("Branch Manager")) {
-				session.setAttribute("union", union);
-				session.setAttribute("branch", branch);
-				session.setAttribute("position", position);
+
 				response.sendRedirect("BranchDashboard.jsp");
 				
 			}else if(position.equals("Field Staff")) {
-				
-				session.setAttribute("union", union);
-				session.setAttribute("branch", branch);
-				session.setAttribute("position", position);
 				response.sendRedirect("trips.jsp");
 				
 			}
