@@ -569,34 +569,50 @@
                                  <form id="bookForm">
                                     <div class="form-group row  container justify-content-center">
                                    <!-- Employee Details  -->
-                                   <form id="bookForm">
+                                
                                                         <div class="form-group row  container justify-content-center">
                                    <!-- Employee Details  -->
                                        
-                                        
-										<div class="form-group floating-label col-md-4 mb-3">
-										<label for="" class="mt-1">ID Number</label>
-											<input class="form-control" name="idNumber" id="idNumber" readonly>
-										</div>
-										
-									    <div class="col-md-4 mb-3">
+                                         <div class="col-md-4 mb-3">
                                             <label>Passenger's Phone</label>
                                             <input class="form-control" name="phone" id="phone" type="number" readonly>
                                         </div>
+                                        
 									
 									   <div class="col-md-4 mb-3">
                                                 <label>Passeger's Name</label>
                                                     <input class="form-control" name="passenger" id="passenger" readonly>
                                             </div>
                                             
-
-                                            
-                                     
-                                            
                                              <div class="col-md-4 mb-3">
                                                 <label>Emergency Phone</label>
                                                     <input class="form-control" name="ephone" id="ephone" type="tel" readonly>
                                             </div>
+                                            
+                                             <div class="col-md-4 mb-3">
+                                            <label>ID Type</label>
+                                            <div class="input-group mb-3">
+                                                   <select name="trip" id="tripVal" class="selectpicker form-control" data-live-search="true">
+											 <option >click to select</option>
+											 <%
+											
+											    String query="Select * from idtype";
+												 rst = st.executeQuery(query);
+												while(rst.next()){
+											%>
+											   
+												<option ><%=rst.getString(2) %></option>
+											<%} %>	 
+											</select>
+                                                    <button class="btn btn-dark" type="button"
+                                                       onclick="openSeat()" title="open this field"><i class="fa-solid fa-fa-plus"></i></button>
+                                                </div>
+                                            </div>
+                                            
+                                       <div class="form-group floating-label col-md-4 mb-3">
+										<label for="" class="mt-1">ID Number</label>
+											<input class="form-control" name="idNumber" id="idNumber" readonly>
+										</div>
                                             
                                           <div class="col-md-4 mb-3">
                                                 <label>Destination</label>
@@ -612,12 +628,6 @@
                                                 </div>
                                             </div>
                                             </div>
-                                                       
-                                                       
-                                                       </form> 
-                                        
-                                        
-                                        
 										</div>
 										</form>
                                                         
@@ -995,9 +1005,9 @@
 										        			  
 										        			  if(obj.length == 0){
 										        				  
-										        				  $('#passenger').val('').removeAttr('readonly');
-										        				  $('#phone').val('').removeAttr('readonly');
-										        				  $('#ephone').val('').removeAttr('readonly');
+										        				  $('#passenger').removeAttr('readonly');
+										        				  $('#phone').removeAttr('readonly');
+										        				  $('#ephone').removeAttr('readonly');
 										        				  
 										        				  
 										        			  }else{
@@ -1026,9 +1036,9 @@
 										        			  var obj = JSON.parse(msg);
 										        			  if(obj.length == 0){
 										        				  
-										        				  $('#passenger').removeAttr('readonly');
-										        				  $('#idNumber').removeAttr('readonly');
-										        				  $('#ephone').removeAttr('readonly');
+										        				  $('#passenger').val('').removeAttr('readonly');
+										        				  $('#idNumber').val('').removeAttr('readonly');
+										        				  $('#ephone').val('').removeAttr('readonly');
 										        				  
 										        				  
 										        			  }else{
